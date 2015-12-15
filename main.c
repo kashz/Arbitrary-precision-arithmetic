@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "bignum.h"
+#include "accessor.h"
+#include "bignumIO.h"
+#include "operation.h"
 
 int simpleMultiple (int a, int b, int* c)
 {
