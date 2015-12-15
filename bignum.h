@@ -1,10 +1,6 @@
 #ifndef __BIGNUM_H__
 #define __BIGNUM_H__
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
 #define KETA 30
 
 struct NUMBER
@@ -30,6 +26,12 @@ int setInt (struct NUMBER*, int);
 int numComp (const struct NUMBER*, const struct NUMBER*);
 int add (const struct NUMBER*, const struct NUMBER*, struct NUMBER*);
 int sub (const struct NUMBER*, const struct NUMBER*, struct NUMBER*);
+int increment (const struct NUMBER*, struct NUMBER*);
+int decrement (const struct NUMBER*, struct NUMBER*);
+int multiple (const struct NUMBER*, const struct NUMBER*, struct NUMBER*);
+int shiftLeft (const struct NUMBER* a, struct NUMBER* b, int nBit);
+int directAdd(struct NUMBER* addedNum, struct NUMBER* addNum);
+int oneDigitMultiple (const struct NUMBER* a, int oneDigitNum, struct NUMBER* result);
 
 /*********************************/
 // getter, setter

@@ -1,4 +1,7 @@
 #include "bignum.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 void setSign (struct NUMBER* a, int s)
 {
@@ -330,4 +333,104 @@ int sub (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
 		sub (&abs_b, &abs_a, c);
 		return retVal;
 	}
+}
+int increment (const struct NUMBER* a, struct NUMBER * b)
+{
+	struct NUMBER one;
+	int r;
+	setInt(&one, 1);
+	r = add(a, &one, b);
+
+	return (r);
+}
+int decrement (const struct NUMBER* a, struct NUMBER* b)
+{
+	struct NUMBER one;
+	int r;
+	setInt(&one, 1);
+	r = sub(a, &one, b);
+
+	return (r);
+}
+int oneDigitMultiple (const struct NUMBER* a, int oneDigitNum, struct NUMBER* result)
+{
+	int i, d;
+	int h = 0;
+	int status = 0;
+
+	clearByZero (result);
+
+	for (i = 0; i < KETA; i++)
+	{
+		d = a->n[i] * oneDigitNum + h;
+		result->n[i] = d % 10;
+		h = d / 10;
+	}
+	if (h != 0)
+	{
+		status = -1;
+	}
+
+	return status;
+}
+int shiftLeft (const struct NUMBER* a, struct NUMBER* b, int nBit)
+{
+	int i;
+	int status = 0;
+
+	if (nBit == 0)
+	{
+		copyNumber(a, b);
+	}
+	else if (nBit < KETA)
+	{
+		clearByZero(b);
+		for (i = 0; i < KETA; i++)
+		{
+			b->n[nBit + i] = a->n[i];
+		}
+		if (a->n[KETA-nBit] != 0)
+		{
+			status = -1;
+		}
+		setSign(b, getSign(a));
+	}
+	else
+	{
+		status = -1;
+	}
+	return status;
+}
+int directAdd(struct NUMBER* addedNum, struct NUMBER* addNum)
+{
+	struct NUMBER tmp;
+	int status;
+
+	copyNumber(addedNum, &tmp);
+	status = add(&tmp, addNum, addedNum);
+
+	return (status);
+}
+int multiple (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* result)
+{
+	int i, j;
+	struct NUMBER d, e, f;
+	int status;
+
+	clearByZero(result);
+
+	for (i = 0; i < KETA; i++)
+	{
+		oneDigitMultiple (a, b->n[i], &d);
+		if (isZero(&d) == -1)
+		{
+			status = shiftLeft(&d, &e, i);
+			status = directAdd(result, &e);
+
+			printf("re = ");
+			dispNumber(&e);
+			nextLine();
+		}
+	}
+	return status;
 }
