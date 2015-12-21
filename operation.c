@@ -227,7 +227,7 @@ int shiftLeft (const struct NUMBER* a, struct NUMBER* b, int nBit)
 	}
 	return status;
 }
-int directAdd(struct NUMBER* addedNum, struct NUMBER* addNum)
+int directAdd(struct NUMBER* addedNum, const struct NUMBER* addNum)
 {
 	struct NUMBER tmp;
 	int status;
@@ -241,22 +241,49 @@ int multiple (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* res
 {
 	int i, j;
 	struct NUMBER d, e, f;
+	struct NUMBER abs_a, abs_b;
 	int status;
 
-	clearByZero(result);
-
-	for (i = 0; i < KETA; i++)
+	if (isZero(a) == 0 || isZero(b) == 0)
 	{
-		oneDigitMultiple (a, b->n[i], &d);
-		if (isZero(&d) == -1)
+		status = 0;
+		clearByZero(result);
+	}
+	else if (getSign(a) == 1 && getSign(b) == 1)
+	{
+	clearByZero(result);
+	for (i = 0; i < KETA; i++)
 		{
-			status = shiftLeft(&d, &e, i);
-			status = directAdd(result, &e);
-
-			printf("re = ");
-			dispNumber(&e);
-			nextLine();
+			oneDigitMultiple (a, b->n[i], &d);
+			if (isZero(&d) == -1)
+			{
+				shiftLeft(&d, &e, i);
+				status = directAdd(result, &e);
+				if (status == -1)
+				{
+					break;
+					printf("multiple error");
+				}
+			}
 		}
+	}
+	else if (getSign(a) == 1 && getSign(b) == -1)
+	{
+		getAbs(b, &abs_b);
+		status = multiple(a, &abs_b, result);
+		setSign(result, -1);
+	}
+	else if (getSign(a) == -1 && getSign(b) == 1)
+	{
+		getAbs(a, &abs_a);
+		status = multiple(&abs_a, b, result);
+		setSign(result, -1);
+	}
+	else if (getSign(a) == -1 && getSign(b) == -1)
+	{
+		getAbs(a, &abs_a);
+		getAbs(b, &abs_b);
+		status = multiple (&abs_a, &abs_b, result);
 	}
 	return status;
 }

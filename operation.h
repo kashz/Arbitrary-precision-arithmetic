@@ -5,7 +5,7 @@ int mulBy10(const struct NUMBER*, struct NUMBER*);
 int divBy10 (const struct NUMBER*, struct NUMBER*);
 
 int add (const struct NUMBER*, const struct NUMBER*, struct NUMBER*);
-int directAdd(struct NUMBER* addedNum, struct NUMBER* addNum);
+int directAdd(struct NUMBER* addedNum, const struct NUMBER* addNum);
 int increment (const struct NUMBER*, struct NUMBER*);
 
 int sub (const struct NUMBER*, const struct NUMBER*, struct NUMBER*);
