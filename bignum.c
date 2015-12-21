@@ -13,8 +13,6 @@ void clearByZero(struct NUMBER* a)
 	}
 	setSign (a, 1);
 }
-
-
 void setRnd (struct NUMBER* a, int n)
 {
 	int i;
@@ -60,7 +58,6 @@ int isZero (const struct NUMBER* a)
 	}
 	return (0);
 }
-
 void swap (struct NUMBER* a, struct NUMBER* b)
 {
 	struct NUMBER c;

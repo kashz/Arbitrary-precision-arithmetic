@@ -21,9 +21,4 @@ void swap (struct NUMBER*, struct NUMBER*);
 int numComp (const struct NUMBER*, const struct NUMBER*);
 
 
-
-
-
-
-
 #endif // __BIGNUM_H__

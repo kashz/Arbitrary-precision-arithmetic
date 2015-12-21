@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "bignum.h"
-#include "bignumIO.h"
 #include "accessor.h"
+#include "bignumIO.h"
 
 void dispNumber(const struct NUMBER* a)
 {
