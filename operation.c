@@ -287,3 +287,18 @@ int multiple (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* res
 	}
 	return status;
 }
+int directSub (struct NUMBER* minuend, const struct NUMBER* subtrahend)
+{
+    struct NUMBER tmp;
+	int status;
+
+	copyNumber(minuend, &tmp);
+	status = sub(&tmp, subtrahend, minuend);
+
+	return (status);
+}
+
+int divide (const struct NUMBER* divend, const struct NUMBER* divisor, struct NUMBER* quotient, struct NUMBER* remainder)
+{
+    
+}
