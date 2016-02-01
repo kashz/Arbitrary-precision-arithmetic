@@ -84,6 +84,7 @@ int add (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
 		setSign(c, -1);
 		return retVal;
 	}
+	return -1;
 }
 
 int sub (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
@@ -159,6 +160,7 @@ int sub (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
 		sub (&abs_b, &abs_a, c);
 		return retVal;
 	}
+	return -1;
 }
 int increment (const struct NUMBER* a, struct NUMBER * b)
 {
@@ -300,5 +302,65 @@ int directSub (struct NUMBER* minuend, const struct NUMBER* subtrahend)
 
 int divide (const struct NUMBER* divend, const struct NUMBER* divisor, struct NUMBER* quotient, struct NUMBER* remainder)
 {
-    
+	struct NUMBER dived, diver, quo, rem;
+	struct NUMBER one;
+	int status;
+
+	if (isZero(divisor) == 0)
+	{
+		clearByZero(quotient);
+		clearByZero(remainder);
+		return -1;                 // divide by zero error
+	}
+
+
+	if (getSign(divend) == 1 && getSign(divisor) == 1)
+	{
+		copyNumber(divend, &dived);
+		copyNumber(divisor, &diver);
+		clearByZero(&quo);
+		clearByZero(&rem);
+		setInt(&one, 1);
+
+		while(numComp(&dived, &diver) >= 0)
+		{
+			directSub(&dived, &diver);
+			directAdd(&quo, &one);
+		}
+		copyNumber(&quo, quotient);
+		copyNumber(&dived, remainder);
+		return 0;
+	}
+	else if (getSign(divend) == 1 && getSign(divisor) == -1)
+	{
+		copyNumber(divisor, &diver);
+		setSign(&diver, POSITIVE);
+		status = divide(divend, &diver, quotient, remainder);
+		if(isZero(quotient) != 0)
+			setSign(quotient, NEGATIVE);
+		return status;
+	}
+	else if (getSign(divend) == -1 && getSign(divisor) == 1)
+	{
+		copyNumber(divend, &dived);
+		setSign(&dived, POSITIVE);
+		status = divide(&dived, divisor, quotient, remainder);
+		if (isZero(quotient) != 0)
+			setSign(quotient, NEGATIVE);
+		if (isZero(remainder) != 0)
+			setSign(remainder, NEGATIVE);
+		return status;
+	}
+	else if (getSign(divend) == -1 && getSign(divisor) == -1)
+	{
+		copyNumber(divend, &dived);
+		copyNumber(divisor, &diver);
+		setSign(&dived, POSITIVE);
+		setSign(&diver, POSITIVE);
+		status = divide(&dived, &diver, quotient, remainder);
+		if (isZero(remainder) != 0)
+			setSign(remainder, NEGATIVE);
+		return status;
+	}
+	return -1;
 }
