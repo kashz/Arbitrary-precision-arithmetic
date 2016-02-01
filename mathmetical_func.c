@@ -119,3 +119,22 @@ int lcm (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
     copyNumber(&ans, c);
     return 0;
 }
+int simple_sqrt(const struct NUMBER* sq, struct NUMBER* min_int)
+{
+    struct NUMBER N, sub_val, two;
+
+    if (getSign(sq) == NEGATIVE)
+        return -1;
+
+    setInt(&sub_val, 1);
+    setInt(&two, 2);
+    copyNumber(sq, &N);
+    while(numComp(&N, &sub_val) >= 0)
+    {
+        directSub(&N, &sub_val);
+        directAdd(&sub_val, &two);
+    }
+
+    copyNumber(&N, min_int);
+    return 0;
+}

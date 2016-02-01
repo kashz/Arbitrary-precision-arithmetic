@@ -13,5 +13,6 @@ int isPrime(const struct NUMBER* a);
 int gcd (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c);
 //
 int lcm (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c);
+int simple_sqrt(const struct NUMBER* sq, struct NUMBER* min_int);
 
 #endif // MATHMETICAL_FUNC
