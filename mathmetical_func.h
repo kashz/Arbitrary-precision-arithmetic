@@ -7,7 +7,8 @@
 
 // c = a^b
 int power (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c);
-
+// If a is prime, return 1.
+int isPrime(const struct NUMBER* a);
 
 
 #endif // MATHMETICAL_FUNC

@@ -41,3 +41,35 @@ int power(const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
     copyNumber(&e, c);
     return (0);
 }
+int isPrime(const struct NUMBER* a)
+{
+    int i;
+    struct NUMBER one, two;
+    struct NUMBER result, d, e, remainder;
+
+    if (getSign(a) == -1)
+        return 0;
+    setInt(&one, 1);
+    if (numComp(a, &one) == 0)
+        return 1;
+    setInt(&two, 2);
+    if (numComp(a, &two) == 0)
+        return 1;
+    divide(a, &two, &result, &remainder);
+    if (isZero(&remainder) == 0)
+    {
+        return 0;
+    }
+
+    setInt(&d, 3);
+    while(1)
+    {
+        if (numComp(a, &d) <= 0)
+            break;
+        divide(a, &d, &result, &remainder);
+        if (isZero(&remainder) == 0)
+            return 0;
+        directAdd(&d, &two);
+    }
+    return 1;
+}
