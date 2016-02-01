@@ -107,3 +107,15 @@ int gcd (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
     copyNumber(&smaller, c);
     return 0;
 }
+
+int lcm (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
+{
+    struct NUMBER gcd_val, ans, re, q;
+
+    gcd(a, b, &gcd_val);
+    divide(a, &gcd_val, &q, &re);
+    multiple(&q, b, &ans);
+
+    copyNumber(&ans, c);
+    return 0;
+}
