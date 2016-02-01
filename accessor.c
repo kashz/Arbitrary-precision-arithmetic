@@ -3,15 +3,18 @@
 
 void setSign (struct NUMBER* a, int s)
 {
-	if (s == 1)
-		a->sign = 1;
-	else if (s == -1)
-		a->sign = -1;
+	if (s == POSITIVE)
+		a->sign = POSITIVE;
+	else if (s == NEGATIVE)
+		a->sign = NEGATIVE;
 }
 int getSign (const struct NUMBER* a)
 {
-	if (a->sign == 1)
-		return 1;
-	else if (a->sign == -1)
-		return -1;
+	int sign = 0;
+	if (a->sign == POSITIVE)
+		sign = POSITIVE;
+	else if (a->sign == NEGATIVE)
+		sign = NEGATIVE;
+
+	return sign;
 }
