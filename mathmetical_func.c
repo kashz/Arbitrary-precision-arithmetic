@@ -73,3 +73,37 @@ int isPrime(const struct NUMBER* a)
     }
     return 1;
 }
+
+int gcd (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
+{
+    struct NUMBER bigger, smaller, quotient, remainder;
+    int r_comp;
+
+    r_comp = numComp(a, b);
+    if (r_comp > 0)
+    {
+        copyNumber(a, &bigger);
+        copyNumber(b, &smaller);
+    }
+    else if (r_comp == 0)
+    {
+        copyNumber(a, c);
+        return 0;
+    }
+    else if (r_comp < 0)
+    {
+        copyNumber(a, &smaller);
+        copyNumber(b, &bigger);
+    }
+
+    while (1)
+    {
+        divide(&bigger, &smaller, &quotient, &remainder);
+        if (isZero(&remainder) == 0)
+            break;
+        copyNumber(&smaller, &bigger);
+        copyNumber(&remainder, &smaller);
+    }
+    copyNumber(&smaller, c);
+    return 0;
+}

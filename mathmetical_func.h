@@ -9,6 +9,8 @@
 int power (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c);
 // If a is prime, return 1.
 int isPrime(const struct NUMBER* a);
+// Euclidean algorithm
+int gcd (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c);
 
 
 #endif // MATHMETICAL_FUNC
