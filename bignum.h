@@ -16,7 +16,7 @@ void setRnd (struct NUMBER*, int);
 int setInt (struct NUMBER*, int);
 void copyNumber(const struct NUMBER*, struct NUMBER*);
 void getAbs(const struct NUMBER*, struct NUMBER*);
-int isZero (const struct NUMBER*);
+int isZero (const struct NUMBER*); // if a is zero, return 0;
 void swap (struct NUMBER*, struct NUMBER*);
 int numComp (const struct NUMBER*, const struct NUMBER*);
 
