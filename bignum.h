@@ -1,7 +1,7 @@
 #ifndef __BIGNUM_H__
 #define __BIGNUM_H__
 
-#define KETA 30
+#define KETA 1050
 
 struct NUMBER
 {
