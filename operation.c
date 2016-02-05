@@ -229,6 +229,14 @@ int shiftLeft (const struct NUMBER* a, struct NUMBER* b, int nBit)
 	}
 	return status;
 }
+int directShiftLeft(struct NUMBER* number, int nBit)
+{
+	int status;
+	struct NUMBER tmp;
+	copyNumber(number, &tmp);
+	status = shiftLeft (&tmp, number, nBit);
+	return status;
+}
 int directAdd(struct NUMBER* addedNum, const struct NUMBER* addNum)
 {
 	struct NUMBER tmp;
@@ -244,7 +252,7 @@ int multiple (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* res
 	int i, j;
 	struct NUMBER d, e, f;
 	struct NUMBER abs_a, abs_b;
-	int status;
+	int status = -1;
 
 	if (isZero(a) == 0 || isZero(b) == 0)
 	{
@@ -253,19 +261,18 @@ int multiple (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* res
 	}
 	else if (getSign(a) == 1 && getSign(b) == 1)
 	{
-	clearByZero(result);
-	for (i = 0; i < KETA; i++)
+		clearByZero(result);
+		for (i = 0; i < KETA; i++)
 		{
+			if (b->n[i] == 0)
+				continue;
 			oneDigitMultiple (a, b->n[i], &d);
-			if (isZero(&d) == -1)
+			shiftLeft(&d, &e, i);
+			status = directAdd(result, &e);
+			if (status == -1)
 			{
-				shiftLeft(&d, &e, i);
-				status = directAdd(result, &e);
-				if (status == -1)
-				{
-					break;
-					printf("multiple error");
-				}
+				break;
+				printf("multiple error");
 			}
 		}
 	}
@@ -299,6 +306,14 @@ int directSub (struct NUMBER* minuend, const struct NUMBER* subtrahend)
 
 	return (status);
 }
+int directMultiple (struct NUMBER* multiplicand, const struct NUMBER* multiplier)
+{
+	struct NUMBER tmp;
+	int status;
+	copyNumber(multiplicand, &tmp);
+	status = multiple(&tmp, multiplier, multiplicand);
+	return status;
+}
 
 int divide (const struct NUMBER* divend, const struct NUMBER* divisor, struct NUMBER* quotient, struct NUMBER* remainder)
 {
@@ -312,7 +327,6 @@ int divide (const struct NUMBER* divend, const struct NUMBER* divisor, struct NU
 		clearByZero(remainder);
 		return -1;                 // divide by zero error
 	}
-
 
 	if (getSign(divend) == 1 && getSign(divisor) == 1)
 	{
@@ -358,6 +372,98 @@ int divide (const struct NUMBER* divend, const struct NUMBER* divisor, struct NU
 		setSign(&dived, POSITIVE);
 		setSign(&diver, POSITIVE);
 		status = divide(&dived, &diver, quotient, remainder);
+		if (isZero(remainder) != 0)
+			setSign(remainder, NEGATIVE);
+		return status;
+	}
+	return -1;
+}
+
+int fast_divide (const struct NUMBER* divend, const struct NUMBER* divisor, struct NUMBER* quotient, struct NUMBER* remainder)
+{
+	int divendTopDigitIndex, divisorTopDigitIndex, firstIndex;
+	int status;
+	struct NUMBER partition, quo, rem, positive_divend, positive_divisor;
+
+	if (isZero(divisor) == 0)
+	{
+		clearByZero(quotient);
+		clearByZero(remainder);
+		return -1;
+	}
+	else if (isZero(divend) == 0)
+	{
+		clearByZero(quotient);
+		clearByZero(remainder);
+		return 0;
+	}
+
+	if (getSign(divend) == POSITIVE && getSign(divisor) == POSITIVE)
+	{
+		if (numComp(divend, divisor) < 0)
+		{
+			clearByZero(quotient);
+			copyNumber(divend, remainder);
+			return 0;
+		}
+
+		divendTopDigitIndex  = getTopDigitIndex(divend);
+		divisorTopDigitIndex = getTopDigitIndex(divisor);
+		clearByZero(quotient);
+		clearByZero(remainder);
+		clearByZero(&quo);
+		clearByZero(&rem);
+		clearByZero(&partition);
+
+		if (divend->n[divendTopDigitIndex] < divisor->n[divisorTopDigitIndex])
+		{
+			copyPartition(divend, divendTopDigitIndex, divendTopDigitIndex - divisorTopDigitIndex - 1, &partition);
+		}
+		else
+		{
+			copyPartition(divend, divendTopDigitIndex, divendTopDigitIndex - divisorTopDigitIndex, &partition);
+		}
+		firstIndex = divendTopDigitIndex - getTopDigitIndex(&partition);
+
+		while (1)
+		{
+			//printf("par:"); dispNumber(&partition); nextLine();
+			status = divide(&partition, divisor, &quo, &rem);
+			//printf("quo:"); dispNumber(&quo); nextLine();
+			//printf("rem:"); dispNumber(&rem); nextLine();
+			quotient->n[firstIndex--] = quo.n[0];
+			if (firstIndex < 0)
+				break;
+			copyNumber(&rem, &partition);
+			directShiftLeft(&partition, 1);
+			partition.n[0] = divend->n[firstIndex];
+		}
+		copyNumber(&rem, remainder);
+		return status;
+	}
+	else if (getSign(divend) == POSITIVE && getSign(divisor) == NEGATIVE)
+	{
+		getAbs (divisor, &positive_divisor);
+		status = fast_divide(divend, &positive_divisor, quotient, remainder);
+		if(isZero(quotient) != 0)
+			setSign(quotient, NEGATIVE);
+		return status;
+	}
+	else if (getSign(divend) == NEGATIVE && getSign(divisor) == POSITIVE)
+	{
+		getAbs (divend, &positive_divend);
+		status = fast_divide(&positive_divend, divisor, quotient, remainder);
+		if (isZero(quotient) != 0)
+			setSign(quotient, NEGATIVE);
+		if (isZero(remainder) != 0)
+			setSign(remainder, NEGATIVE);
+		return status;
+	}
+	else if (getSign(divend) == NEGATIVE && getSign(divisor) == NEGATIVE)
+	{
+		getAbs (divend, &positive_divend);
+		getAbs (divisor, &positive_divisor);
+		status = fast_divide(&positive_divend, &positive_divisor, quotient, remainder);
 		if (isZero(remainder) != 0)
 			setSign(remainder, NEGATIVE);
 		return status;

@@ -14,12 +14,14 @@ int decrement (const struct NUMBER*, struct NUMBER*);
 
 int oneDigitMultiple (const struct NUMBER* a, int oneDigitNum, struct NUMBER* result);
 int multiple (const struct NUMBER*, const struct NUMBER*, struct NUMBER*);
+int directMultiple (struct NUMBER* multiplicand, const struct NUMBER* multiplier);
 
 int shiftLeft (const struct NUMBER* a, struct NUMBER* b, int nBit);
+int directShiftLeft(struct NUMBER* number, int nBit);
 
 
 int divide (const struct NUMBER* divend, const struct NUMBER* divisor, struct NUMBER* quotient, struct NUMBER* remainder);
-
+int fast_divide (const struct NUMBER* divend, const struct NUMBER* divisor, struct NUMBER* quotient, struct NUMBER* remainder);
 
 
 
