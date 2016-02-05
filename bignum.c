@@ -1,4 +1,5 @@
 #include "bignum.h"
+#include "accessor.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -118,5 +119,34 @@ int numComp (const struct NUMBER* a, const struct NUMBER* b)
 				return 1;
 		}
 		return 0;
+	}
+	return (-1);
+}
+int isEven (const struct NUMBER* number)
+{
+	if (number->n[0]%2 == 0)
+		return 1;
+	else if (number->n[0]%2 == 1)
+		return 0;
+
+	return -1;
+}
+int getTopDigitIndex(const struct NUMBER* number)
+{
+	int i;
+	for (i = KETA - 1; i >= 0; i--)
+	{
+		if (number->n[i] != 0)
+			break;
+	}
+	return i;
+}
+void copyPartition (const struct NUMBER* original, int firstIndex, int lastIndex, struct NUMBER* copied)
+{
+	int i;
+
+	for (i = firstIndex; i >= lastIndex; i--)
+	{
+		copied->n[i-lastIndex] = original->n[i];
 	}
 }

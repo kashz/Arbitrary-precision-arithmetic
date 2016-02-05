@@ -19,6 +19,8 @@ void getAbs(const struct NUMBER*, struct NUMBER*);
 int isZero (const struct NUMBER*); // if a is zero, return 0;
 void swap (struct NUMBER*, struct NUMBER*);
 int numComp (const struct NUMBER*, const struct NUMBER*);
-
+int isEven (const struct NUMBER* number);
+int getTopDigitIndex(const struct NUMBER* number);
+void copyPartition (const struct NUMBER* original, int firstIndex, int lastIndex, struct NUMBER* copied);   // first > last
 
 #endif // __BIGNUM_H__
