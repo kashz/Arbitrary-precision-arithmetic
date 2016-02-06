@@ -17,7 +17,7 @@ int power(const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
         setInt(c, 1);
         return (0);
     }
-    if (getSign(b) == -1)
+    if (getSign(b) == NEGATIVE)
     {
         return (-1);
     }
@@ -47,7 +47,7 @@ int isPrime(const struct NUMBER* a)
     struct NUMBER one, two;
     struct NUMBER result, d, e, remainder;
 
-    if (getSign(a) == -1)
+    if (getSign(a) == NEGATIVE)
         return 0;
     setInt(&one, 1);
     if (numComp(a, &one) == 0)

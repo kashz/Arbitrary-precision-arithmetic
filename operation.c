@@ -45,7 +45,7 @@ int add (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
 	a_sign = getSign(a);
 	b_sign = getSign(b);
 
-	if (a_sign == 1 && b_sign == 1)
+	if (a_sign == POSITIVE && b_sign == POSITIVE)
 	{
 		for (i = 0; i < KETA; i++)
 		{
@@ -55,33 +55,33 @@ int add (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
 		}
 		if (carry != 0)
 		{
-			setSign(c, 1);
+			setSign(c, POSITIVE);
 			return -1;
 		}
 		else
 		{
-			setSign(c, 1);
+			setSign(c, POSITIVE);
 			return 0;
 		}
 	}
-	else if (a_sign == 1 && b_sign == -1)
+	else if (a_sign == POSITIVE && b_sign == NEGATIVE)
 	{
 		getAbs(b, &abs_b);
 		retVal = sub(a, &abs_b, c);
 		return retVal;
 	}
-	else if (a_sign == -1 && b_sign == 1)
+	else if (a_sign == NEGATIVE && b_sign == POSITIVE)
 	{
 		getAbs(a, &abs_a);
 		retVal = sub(b, &abs_a, c);
 		return retVal;
 	}
-	else if (a_sign == -1 && b_sign == -1)
+	else if (a_sign == NEGATIVE && b_sign == NEGATIVE)
 	{
 		getAbs(a, &abs_a);
 		getAbs(b, &abs_b);
 		retVal = add(&abs_a, &abs_b, c);
-		setSign(c, -1);
+		setSign(c, NEGATIVE);
 		return retVal;
 	}
 	return -1;
@@ -99,7 +99,7 @@ int sub (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
 	a_sign = getSign(a);
 	b_sign = getSign(b);
 
-	if (a_sign == 1 && b_sign == 1)
+	if (a_sign == POSITIVE && b_sign == POSITIVE)
 	{
 		isComp = numComp(a, b);
 		if (isComp == 1)
@@ -120,12 +120,12 @@ int sub (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
 			}
 			if (borrow != 0)
 			{
-				setSign(c, 1);
+				setSign(c, POSITIVE);
 				return -1;
 			}
 			else
 			{
-				setSign(c, 1);
+				setSign(c, POSITIVE);
 				return 0;
 			}
 		}
@@ -136,24 +136,24 @@ int sub (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
 		else if (isComp == -1)
 		{
 			retVal = sub(b, a, c);
-			setSign(c, -1);
+			setSign(c, NEGATIVE);
 			return retVal;
 		}
 	}
-	else if (a_sign == 1 && b_sign == -1)
+	else if (a_sign == POSITIVE && b_sign == NEGATIVE)
 	{
 		getAbs(b, &abs_b);
 		retVal = add(a, &abs_b, c);
 		return retVal;
 	}
-	else if (a_sign == -1 && b_sign == 1)
+	else if (a_sign == NEGATIVE && b_sign == POSITIVE)
 	{
 		getAbs (a, &abs_a);
 		retVal = add(&abs_a, b, c);
 		setSign(c, -1);
 		return retVal;
 	}
-	else if (a_sign == -1 && b_sign == -1)
+	else if (a_sign == NEGATIVE && b_sign == NEGATIVE)
 	{
 		getAbs (a, &abs_a);
 		getAbs (b, &abs_b);
@@ -259,7 +259,7 @@ int multiple (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* res
 		status = 0;
 		clearByZero(result);
 	}
-	else if (getSign(a) == 1 && getSign(b) == 1)
+	else if (getSign(a) == POSITIVE && getSign(b) == POSITIVE)
 	{
 		clearByZero(result);
 		for (i = 0; i < KETA; i++)
@@ -276,19 +276,19 @@ int multiple (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* res
 			}
 		}
 	}
-	else if (getSign(a) == 1 && getSign(b) == -1)
+	else if (getSign(a) == POSITIVE && getSign(b) == NEGATIVE)
 	{
 		getAbs(b, &abs_b);
 		status = multiple(a, &abs_b, result);
-		setSign(result, -1);
+		setSign(result, NEGATIVE);
 	}
-	else if (getSign(a) == -1 && getSign(b) == 1)
+	else if (getSign(a) == NEGATIVE && getSign(b) == POSITIVE)
 	{
 		getAbs(a, &abs_a);
 		status = multiple(&abs_a, b, result);
-		setSign(result, -1);
+		setSign(result, NEGATIVE);
 	}
-	else if (getSign(a) == -1 && getSign(b) == -1)
+	else if (getSign(a) == NEGATIVE && getSign(b) == NEGATIVE)
 	{
 		getAbs(a, &abs_a);
 		getAbs(b, &abs_b);
@@ -328,7 +328,7 @@ int divide (const struct NUMBER* divend, const struct NUMBER* divisor, struct NU
 		return -1;                 // divide by zero error
 	}
 
-	if (getSign(divend) == 1 && getSign(divisor) == 1)
+	if (getSign(divend) == POSITIVE && getSign(divisor) == POSITIVE)
 	{
 		copyNumber(divend, &dived);
 		copyNumber(divisor, &diver);
@@ -345,19 +345,17 @@ int divide (const struct NUMBER* divend, const struct NUMBER* divisor, struct NU
 		copyNumber(&dived, remainder);
 		return 0;
 	}
-	else if (getSign(divend) == 1 && getSign(divisor) == -1)
+	else if (getSign(divend) == POSITIVE && getSign(divisor) == NEGATIVE)
 	{
-		copyNumber(divisor, &diver);
-		setSign(&diver, POSITIVE);
+		getAbs(divisor, &diver);
 		status = divide(divend, &diver, quotient, remainder);
 		if(isZero(quotient) != 0)
 			setSign(quotient, NEGATIVE);
 		return status;
 	}
-	else if (getSign(divend) == -1 && getSign(divisor) == 1)
+	else if (getSign(divend) == NEGATIVE && getSign(divisor) == POSITIVE)
 	{
-		copyNumber(divend, &dived);
-		setSign(&dived, POSITIVE);
+		getAbs(divend, &dived);
 		status = divide(&dived, divisor, quotient, remainder);
 		if (isZero(quotient) != 0)
 			setSign(quotient, NEGATIVE);
@@ -365,12 +363,10 @@ int divide (const struct NUMBER* divend, const struct NUMBER* divisor, struct NU
 			setSign(remainder, NEGATIVE);
 		return status;
 	}
-	else if (getSign(divend) == -1 && getSign(divisor) == -1)
+	else if (getSign(divend) == NEGATIVE && getSign(divisor) == NEGATIVE)
 	{
-		copyNumber(divend, &dived);
-		copyNumber(divisor, &diver);
-		setSign(&dived, POSITIVE);
-		setSign(&diver, POSITIVE);
+		getAbs(divend, &dived);
+		getAbs(divisor, &diver);
 		status = divide(&dived, &diver, quotient, remainder);
 		if (isZero(remainder) != 0)
 			setSign(remainder, NEGATIVE);

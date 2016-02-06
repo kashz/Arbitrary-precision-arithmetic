@@ -12,7 +12,7 @@ void clearByZero(struct NUMBER* a)
 	{
 		a->n [i] = 0;
 	}
-	setSign (a, 1);
+	setSign (a, POSITIVE);
 }
 void setRnd (struct NUMBER* a, int n)
 {
@@ -30,9 +30,9 @@ void setRnd (struct NUMBER* a, int n)
 				a->n[i] = 0;
 		}
 		if( random()%2 )
-			setSign (a, 1);
+			setSign (a, POSITIVE);
 		else
-			setSign (a, -1);
+			setSign (a, NEGATIVE);
 	}
 }
 void copyNumber(const struct NUMBER* a, struct NUMBER* b)
@@ -46,7 +46,7 @@ void copyNumber(const struct NUMBER* a, struct NUMBER* b)
 void getAbs(const struct NUMBER* a, struct NUMBER* b)
 {
 	copyNumber(a, b);
-	setSign(b, 1);
+	setSign(b, POSITIVE);
 }
 int isZero (const struct NUMBER* a)
 {
@@ -94,11 +94,11 @@ int numComp (const struct NUMBER* a, const struct NUMBER* b)
 {
 	int i;
 
-	if (getSign(a) == 1 && getSign(b) == -1)
+	if (getSign(a) == POSITIVE && getSign(b) == NEGATIVE)
 		return 1;
-	else if (getSign(a) == -1 && getSign(b) == 1)
+	else if (getSign(a) == NEGATIVE && getSign(b) == POSITIVE)
 		return -1;
-	else if (getSign(a) == 1 && getSign(b) == 1)
+	else if (getSign(a) == POSITIVE && getSign(b) == POSITIVE)
 	{
 		for (i = 0; i < KETA; i++)
 		{
@@ -109,7 +109,7 @@ int numComp (const struct NUMBER* a, const struct NUMBER* b)
 		}
 		return 0;
 	}
-	else if (getSign(a) == -1 && getSign(b) == -1)
+	else if (getSign(a) == NEGATIVE && getSign(b) == NEGATIVE)
 	{
 		for (i = 0; i < KETA; i++)
 		{

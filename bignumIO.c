@@ -9,7 +9,7 @@ void dispNumber(const struct NUMBER* a)
 	int i;
 	char sign;
 
-	if (getSign(a) == 1)
+	if (getSign(a) == POSITIVE)
 		sign = '+';
 	else
 		sign = '-';
@@ -24,7 +24,7 @@ void dispNumberZeroSuppress(const struct NUMBER* a)
 	int i, startIndex = 0;
 	char sign;
 
-	if (getSign(a) == 1)
+	if (getSign(a) == POSITIVE)
 		sign = '+';
 	else
 		sign = '-';
