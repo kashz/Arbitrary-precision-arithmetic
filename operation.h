@@ -1,6 +1,8 @@
 #ifndef __OPERATION_H__
 #define __OPERATION_H__
 
+#include "bignum.h"
+
 int mulBy10(const struct NUMBER*, struct NUMBER*);
 int divBy10 (const struct NUMBER*, struct NUMBER*);
 
@@ -19,10 +21,8 @@ int directMultiple (struct NUMBER* multiplicand, const struct NUMBER* multiplier
 int shiftLeft (const struct NUMBER* a, struct NUMBER* b, int nBit);
 int directShiftLeft(struct NUMBER* number, int nBit);
 
-
 int divide (const struct NUMBER* divend, const struct NUMBER* divisor, struct NUMBER* quotient, struct NUMBER* remainder);
 int fast_divide (const struct NUMBER* divend, const struct NUMBER* divisor, struct NUMBER* quotient, struct NUMBER* remainder);
-
 
 
 #endif //__OPERATION_H__

@@ -3,14 +3,8 @@
 #include <time.h>
 #include <sys/time.h>
 #include "bignum.h"
-#include "accessor.h"
-#include "bignumIO.h"
 #include "operation.h"
 #include "mathmetical_func.h"
-
-
-/*********************************/
-
 
 
 int main(void)

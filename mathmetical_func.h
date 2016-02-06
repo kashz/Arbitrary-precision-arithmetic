@@ -2,7 +2,6 @@
 #define MATHMETICAL_FUNC
 
 #include "bignum.h"
-#include "accessor.h"
 #include "operation.h"
 
 // c = a^b

@@ -1,6 +1,4 @@
-#include "bignum.h"
 #include "operation.h"
-#include "accessor.h"
 #include <stdio.h>
 
 int mulBy10(const struct NUMBER* a, struct NUMBER* b)
