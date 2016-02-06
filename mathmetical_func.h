@@ -11,7 +11,6 @@ int power (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c);
 int isPrime(const struct NUMBER* a);
 // Euclidean algorithm
 int gcd (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c);
-//
 int lcm (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c);
 int simple_sqrt(const struct NUMBER* sq, struct NUMBER* min_int);
 // arctan(1/demon)*numer
