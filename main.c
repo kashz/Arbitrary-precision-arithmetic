@@ -11,58 +11,7 @@
 
 /*********************************/
 
-// arctan(1/demon)*numer
-int arctan(struct NUMBER* denom, struct NUMBER* solution)
-{
-	struct NUMBER prev_answer, denom_pow2;
-	struct NUMBER one, two, count, divisor, comm;
-	struct NUMBER shift, rem, quo;
-	struct NUMBER increment, prev_increment;
-	struct NUMBER tmp, prev_divisor;
 
-	clearByZero(solution);
-	clearByZero(&count);
-	clearByZero(&comm);
-	clearByZero(&shift);
-	clearByZero(&denom_pow2);
-	setInt(&one, 1);
-	setInt(&two, 2);
-	shift.n[KETA-1] = 1; // 10^(KETA-1) set
-
-	// denom^2
-	power(denom, &two, &denom_pow2);
-
-	// First Term
-	fast_divide(&shift, denom, &increment, &rem);
-	directAdd(solution, &increment);
-	copyNumber(&increment, &prev_increment);
-	copyNumber(denom, &prev_divisor);
-
-	while (1)
-	{
-		directAdd(&count, &one);
-
-		// 2n+1
-		multiple(&count, &two, &comm);
-        directAdd(&comm, &one);
-		// (1/d)^2n+1
-		multiple(&prev_divisor, &denom_pow2, &divisor);
-		copyNumber(&divisor, &prev_divisor);
-		// 2n+1*(1/d)^2n+1
-		directMultiple(&divisor, &comm);
-
-		if (numComp(&shift, &divisor) < 0)
-			break;
-
-		fast_divide(&shift, &divisor, &increment, &rem);
-		if (isEven(&count) == 0)
-			setSign(&increment, NEGATIVE);
-
-		directAdd(solution, &increment);
-	}
-
-	return 0;
-}
 
 int main(void)
 {
