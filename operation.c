@@ -1,38 +1,6 @@
 #include "operation.h"
 #include <stdio.h>
 
-int mulBy10(const struct NUMBER* a, struct NUMBER* b)
-{
-	int i, retVal;
-
-	if(a->n[KETA-1] == 0)
-		retVal = 0;
-	else
-		retVal = -1;
-
-	for (i = 0; i < KETA-1; i++)
-	{
-		b->n[i+1] = a->n[i];
-	}
-	b->n[0] = 0;
-	setSign (b, getSign(a));
-
-	return retVal;
-}
-int divBy10 (const struct NUMBER* a, struct NUMBER* b)
-{
-	int i, mod;
-
-	mod = getSign(a) * a->n[0];
-
-	for (i = 1; i < KETA; i++)
-	{
-		b->n[i-1] = a->n[i];
-	}
-	b->n[KETA-1] = 0;
-	setSign(b, getSign(a));
-	return mod;
-}
 int add (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
 {
 	int i;
@@ -84,7 +52,6 @@ int add (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
 	}
 	return -1;
 }
-
 int sub (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
 {
 	int i, tmp;
@@ -160,24 +127,6 @@ int sub (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* c)
 	}
 	return -1;
 }
-int increment (const struct NUMBER* a, struct NUMBER * b)
-{
-	struct NUMBER one;
-	int r;
-	setInt(&one, 1);
-	r = add(a, &one, b);
-
-	return (r);
-}
-int decrement (const struct NUMBER* a, struct NUMBER* b)
-{
-	struct NUMBER one;
-	int r;
-	setInt(&one, 1);
-	r = sub(a, &one, b);
-
-	return (r);
-}
 int oneDigitMultiple (const struct NUMBER* a, int oneDigitNum, struct NUMBER* result)
 {
 	int i, d;
@@ -193,9 +142,7 @@ int oneDigitMultiple (const struct NUMBER* a, int oneDigitNum, struct NUMBER* re
 		h = d / 10;
 	}
 	if (h != 0)
-	{
 		status = -1;
-	}
 
 	return status;
 }
@@ -212,19 +159,13 @@ int shiftLeft (const struct NUMBER* a, struct NUMBER* b, int nBit)
 	{
 		clearByZero(b);
 		for (i = 0; i < KETA; i++)
-		{
 			b->n[nBit + i] = a->n[i];
-		}
 		if (a->n[KETA-nBit] != 0)
-		{
 			status = -1;
-		}
 		setSign(b, getSign(a));
 	}
 	else
-	{
 		status = -1;
-	}
 	return status;
 }
 int directShiftLeft(struct NUMBER* number, int nBit)
@@ -268,10 +209,7 @@ int multiple (const struct NUMBER* a, const struct NUMBER* b, struct NUMBER* res
 			shiftLeft(&d, &e, i);
 			status = directAdd(result, &e);
 			if (status == -1)
-			{
-				break;
-				printf("multiple error");
-			}
+				break; // overflow
 		}
 	}
 	else if (getSign(a) == POSITIVE && getSign(b) == NEGATIVE)
@@ -410,13 +348,9 @@ int fast_divide (const struct NUMBER* divend, const struct NUMBER* divisor, stru
 		clearByZero(&partition);
 
 		if (divend->n[divendTopDigitIndex] < divisor->n[divisorTopDigitIndex])
-		{
 			copyPartition(divend, divendTopDigitIndex, divendTopDigitIndex - divisorTopDigitIndex - 1, &partition);
-		}
 		else
-		{
 			copyPartition(divend, divendTopDigitIndex, divendTopDigitIndex - divisorTopDigitIndex, &partition);
-		}
 		firstIndex = divendTopDigitIndex - getTopDigitIndex(&partition);
 
 		while (1)

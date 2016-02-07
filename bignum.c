@@ -25,31 +25,8 @@ void clearByZero(struct NUMBER* a)
 	int i;
 
 	for (i = 0; i < KETA; i++)
-	{
 		a->n [i] = 0;
-	}
 	setSign (a, POSITIVE);
-}
-void setRnd (struct NUMBER* a, int n)
-{
-	int i;
-
-	if (n < 0 || 30 < n)
-		printf("Out of range.");
-	else
-	{
-		for (i = 0; i < KETA; i++)
-		{
-			if (i < n)
-				a->n[i] = random()%10;
-			else
-				a->n[i] = 0;
-		}
-		if( random()%2 )
-			setSign (a, POSITIVE);
-		else
-			setSign (a, NEGATIVE);
-	}
 }
 void copyNumber(const struct NUMBER* a, struct NUMBER* b)
 {
@@ -161,10 +138,9 @@ void copyPartition (const struct NUMBER* original, int firstIndex, int lastIndex
 {
 	int i;
 
+	setSign(copied, getSign(original));
 	for (i = firstIndex; i >= lastIndex; i--)
-	{
 		copied->n[i-lastIndex] = original->n[i];
-	}
 }
 void dispNumber(const struct NUMBER* a)
 {
@@ -177,36 +153,7 @@ void dispNumber(const struct NUMBER* a)
 		sign = '-';
 	printf("%c", sign);
 	for (i = 0; i < KETA; i++)
-	{
 		printf("%2d", a->n[KETA-i-1]);
-	}
-}
-void dispNumberZeroSuppress(const struct NUMBER* a)
-{
-	int i, startIndex = 0;
-	char sign;
-
-	if (getSign(a) == POSITIVE)
-		sign = '+';
-	else
-		sign = '-';
-	printf("%c", sign);
-	for (i = 0; i < KETA; i++)
-	{
-		if (a->n[KETA-i-1] != 0)
-		{
-			startIndex = i;
-			break;
-		}
-	}
-	for (i = startIndex; i < KETA; i++)
-	{
-		printf("%2d", a->n[KETA-i-1]);
-	}
-}
-void nextLine()
-{
-	putchar('\n');
 }
 void outputToLocalFile(const struct NUMBER* output_data)
 {
@@ -214,15 +161,11 @@ void outputToLocalFile(const struct NUMBER* output_data)
 	int i;
 
 	if ((output_stream = fopen("my.txt", "w+")) == NULL)
-	{
 		exit(EXIT_FAILURE);
-	}
 
 	fprintf(output_stream, "%d.", output_data->n[KETA-1]);
-	for (i = KETA-2; i >= KETA-1000; i--)
-	{
+	for (i = KETA-2; i >= 0; i--)
 		fprintf(output_stream, "%d", output_data->n[i]);
-	}
 	fprintf(output_stream, "\n");
 	fclose(output_stream);
 }
